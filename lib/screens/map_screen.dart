@@ -10,6 +10,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../blocs/autocomplete/auto_complete_bloc.dart';
 import '../blocs/places/places_bloc.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
+
 class MapScreen extends StatefulWidget {
   static const String routeName = '/map-screen';
   const MapScreen({Key? key}) : super(key: key);
@@ -21,6 +23,19 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> mapcontroller =
       Completer<GoogleMapController>();
+
+  late String silverMapStyle;
+
+  @override
+  void initState() {
+    _loadMapStyles();
+    super.initState();
+  }
+
+  Future _loadMapStyles() async {
+    silverMapStyle =
+        await rootBundle.loadString('assets/map_style/silver.json');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +68,14 @@ class _MapScreenState extends State<MapScreen> {
                     return GoogleMap(
                       onMapCreated: (controller) {
                         mapcontroller.complete(controller);
+                        controller.setMapStyle(silverMapStyle);
                       },
                       initialCameraPosition: CameraPosition(
                         target: LatLng(
                           state.position.latitude,
                           state.position.longitude,
                         ),
-                        zoom: 14,
+                        zoom: 16,
                       ),
                       myLocationEnabled: true,
                       myLocationButtonEnabled: false,

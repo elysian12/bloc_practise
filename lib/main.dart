@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           child: MaterialApp(
+            navigatorObservers: [ChuckerFlutter.navigatorObserver],
             debugShowCheckedModeBanner: false,
             title: 'Flutter Foods App',
             theme: appTheme(),
